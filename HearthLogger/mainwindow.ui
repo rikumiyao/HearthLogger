@@ -232,10 +232,16 @@
    </property>
    <widget class="QMenu" name="menuHearthLogger">
     <property name="title">
-     <string>HearthLogger</string>
+     <string>File</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
     </property>
    </widget>
    <addaction name="menuHearthLogger"/>
+   <addaction name="menuEdit"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QToolBar" name="mainToolBar">

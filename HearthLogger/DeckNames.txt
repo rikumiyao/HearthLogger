@@ -1,32 +1,9 @@
-Druid
-	Midrange
-	Ramp
-Hunter
-	Face
-	Midrange
-Mage
-	Tempo
-	Mech
-	Flood
-	Freeze
-Paladin
-	Midrange
-	Aggro
-	Control
-Priest
-	Control
-Rogue
-	Oil
-	Fast
-Shaman
-	Bloodlust
-	Midrange
-	Mech
-Warlock
-	Demon Handlock
-	Demon
-	Zoo
-Warrior
-	Control
-	Grim Patron
-
+Druid:Midrange,Ramp
+Hunter:Face,Midrange
+Mage:Tempo,Mech,Flood,Freeze
+Paladin:Midrange,Aggro,Control
+Priest:Control
+Rogue:Oil,Fast
+Shaman:Bloodlust,Midrange,Mech
+Warlock:Demon Handlock,Demon,Zoo
+Warrior:Control,Grim Patron

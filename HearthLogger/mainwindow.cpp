@@ -1,14 +1,16 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QDateTime>
+#include <QTextStream>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    setupDeckNames();
     configureUI();
-
+    setWindowTitle("HearthLogger");
 }
 
 MainWindow::~MainWindow()
@@ -55,6 +57,34 @@ void MainWindow::log(QString text)
     ui->log->appendPlainText(now.toString("[hh:mm:ss]") + text);
 }
 
+
+void MainWindow::setupDeckNames(){
+    QString fileName = ":/DeckNames.txt";
+    if (!fileName.isEmpty()) {
+            QFile file(fileName);
+            if (!file.open(QIODevice::ReadOnly)) {
+                log("Error: Could not open file" + fileName);
+                return;
+            }
+            QTextStream in(&file);
+            while(!in.atEnd()){
+                QString s = in.readLine();
+                QString hero = s.section(":",0,0).trimmed();
+                if(!hero.isEmpty()){
+                    QStringList decks = s.section(":",1,-1).split(",");
+                    heroDecks hDecks;
+                    hDecks.hero = hero;
+                    hDecks.decks = decks;
+                    deckLists.append(hDecks);
+                    ui->yourClass->addItem(hero);
+                    ui->opponentClass->addItem(hero);
+                }
+            }
+            log(in.readAll());
+            file.close();
+        }
+}
+
 void MainWindow::on_submitButton_clicked()
 {
     log("buttonclicked");
@@ -80,4 +110,27 @@ void MainWindow::on_opponentRank_activated(const QString &rank)
         ui->opponentLegend->setEnabled(false);
     }
 }
+
+void MainWindow::on_yourClass_currentIndexChanged(const QString &hero)
+{
+    for(int i=0;i<deckLists.size();i++){
+        if(deckLists.at(i).hero==hero){
+            while(ui->yourDeck->count()>0)
+                ui->yourDeck->removeItem(0);
+            ui->yourDeck->addItems(deckLists.at(i).decks);
+        }
+    }
+}
+
+void MainWindow::on_opponentClass_currentIndexChanged(const QString &hero)
+{
+    for(int i=0;i<deckLists.size();i++){
+        if(deckLists.at(i).hero==hero){
+            while(ui->opponentDeck->count()>0)
+                ui->opponentDeck->removeItem(0);
+            ui->opponentDeck->addItems(deckLists.at(i).decks);
+        }
+    }
+}
+
 
