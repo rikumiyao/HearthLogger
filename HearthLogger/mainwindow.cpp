@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "game.h"
 #include <QDateTime>
 #include <QTextStream>
 
@@ -80,14 +81,47 @@ void MainWindow::setupDeckNames(){
                     ui->opponentClass->addItem(hero);
                 }
             }
-            log(in.readAll());
             file.close();
         }
 }
 
 void MainWindow::on_submitButton_clicked()
 {
-    log("buttonclicked");
+    //catch for errors
+    Game g;
+    g.setYourName(ui->yourName->text());
+    if(ui->yourRank->currentText()=="Legendary"){
+        g.setYourRank(true,ui->yourLegend->value());
+    }
+    else{
+        g.setYourRank(false,ui->yourRank->currentText().toInt());
+    }
+    g.setYourClass(ui->yourClass->currentText());
+    g.setYourDeck(ui->yourDeck->currentText());
+    g.setOpponentName(ui->opponentName->text());
+    if(ui->opponentRank->currentText()=="Legendary"){
+        g.setOpponentRank(true,ui->opponentLegend->value());
+    }
+    else{
+        g.setOpponentRank(false,ui->opponentRank->currentText().toInt());
+    }
+    g.setOpponentClass(ui->opponentClass->currentText());
+    g.setOpponentDeck(ui->opponentDeck->currentText());
+    if(ui->winButton->isChecked()){
+        g.setResult(Game::WIN);
+    }
+    else if(ui->lossButton->isChecked()){
+        g.setResult(Game::LOSS);
+    }
+    else if(ui->tieButton->isChecked()){
+        g.setResult(Game::TIE);
+    }
+    else{
+        //freak out
+    }
+    g.setTime(QDateTime::currentDateTime());
+    log(g.toString());
+    log(Game::fromString(g.toString()).toString());
 }
 
 void MainWindow::on_yourRank_activated(const QString &rank)
